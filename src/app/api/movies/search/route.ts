@@ -49,9 +49,11 @@ export async function GET(req: Request) {
       results,
     });
   } catch (error: any) {
-    if (error.message.includes('401') || error.message.includes('429')) {
+          if (error.message === 'RATE_LIMIT') {
       return Response.json(
-        { error: 'TMDB rate limit or auth error. Try later.' },
+        {
+          error: 'Too many requests. Please try again later.',
+        },
         { status: 429 }
       );
     }

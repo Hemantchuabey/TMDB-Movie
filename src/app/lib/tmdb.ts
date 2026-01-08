@@ -8,8 +8,14 @@ export async function tmdbFetch(path: string) {
     },
   });
 
+  if (response.status === 429) {
+    const error = new Error('RATE_LIMIT');
+    throw error;
+  }
+
   if (!response.ok) {
-    throw new Error(`TMDB request failed with ${response.status}`);
+    const error = new Error('TMDB_ERROR');
+    throw error;
   }
 
   return response.json();

@@ -1,3 +1,5 @@
+import SearchBox from "@/components/SearchBox";
+
 type SearchParams = {
   q?: string;
   page?: string;
@@ -38,7 +40,7 @@ export default async function Page({
   return (
     <main style={{ padding: 24 }}>
       <h1>Movie Search</h1>
-
+      <SearchBox />
       {!q && <p>Use query params to search movies.</p>}
 
       {error && <p style={{ color: "red" }}>{error}</p>}
