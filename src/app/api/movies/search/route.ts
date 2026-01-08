@@ -21,14 +21,15 @@ export async function GET(req: Request) {
   }
 
   try {
-    const config = await tmdbFetch('/configuration');
+    const config = await tmdbFetch('/configuration', 86400);
     const imageBaseUrl =
       config.images.secure_base_url + 'w500';
 
 
-    const data = await tmdbFetch(
-      `/search/movie?query=${encodeURIComponent(q)}&page=${page}&include_adult=false&language=en-US`
-    );
+const data = await tmdbFetch(
+  `/search/movie?query=${encodeURIComponent(q)}&page=${page}&include_adult=false&language=en-US`,
+  60
+);
 
 
     const results = data.results.map((movie: any) => ({
