@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TMDB Movie Explorer (Next.js App Router)
 
-## Getting Started
+This project is a small Movie Explorer application built using **Next.js App Router** and **The Movie Database (TMDB)** API.
 
-First, run the development server:
+The goal of this assignment was not UI polish, but to demonstrate:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Correct SSR usage
+- Clean backend-for-frontend (BFF) architecture
+- Proper API handling, caching, and error handling
+- Production-ready structure
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Server-side rendered movie search
+- Movie detail page with full information
+- Backend-for-frontend using Next.js Route Handlers
+- Secure TMDB integration (no secrets exposed to the client)
+- Pagination via query parameters
+- Loading, empty, error, and not-found states
+- Rate limit handling
+- Light/Dark theme support (UI-level)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧱 Architecture Overview
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This app follows a **Backend-for-Frontend (BFF)** pattern using Next.js Route Handlers.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Why BFF?
 
-## Deploy on Vercel
+- Keeps TMDB token fully server-side
+- Allows validation and response normalization
+- Prevents client-side API misuse
+- Makes the frontend independent of TMDB response shape
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### High-level flow
