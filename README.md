@@ -1,17 +1,18 @@
-# TMDB Movie Explorer (Next.js App Router)
+# TMDB Movie Explorer
 
-This project is a small Movie Explorer application built using **Next.js App Router** and **The Movie Database (TMDB)** API.
+This project is an assignment for a **Catalyst Media Integrated LLP** Company.  
+It demonstrate a small Movie Explorer application built using **Next.js App Router** and **The Movie Database (TMDB)** API.
 
-The goal of this assignment was not UI polish, but to demonstrate:
+About Assignment :
 
-- Correct SSR usage
+- SSR usage
 - Clean backend-for-frontend (BFF) architecture
 - Proper API handling, caching, and error handling
 - Production-ready structure
 
 ---
 
-## 🚀 Features
+## Features
 
 - Server-side rendered movie search
 - Movie detail page with full information
@@ -20,19 +21,40 @@ The goal of this assignment was not UI polish, but to demonstrate:
 - Pagination via query parameters
 - Loading, empty, error, and not-found states
 - Rate limit handling
-- Light/Dark theme support (UI-level)
 
 ---
 
-## 🧱 Architecture Overview
+## Architecture
 
 This app follows a **Backend-for-Frontend (BFF)** pattern using Next.js Route Handlers.
 
-### Why BFF?
+## 🧠 Server-Side Rendering (SSR)
 
-- Keeps TMDB token fully server-side
-- Allows validation and response normalization
-- Prevents client-side API misuse
-- Makes the frontend independent of TMDB response shape
+All data-driven pages are server-rendered:
 
-### High-level flow
+- Search page reads from `searchParams` (`/?q=batman&page=1`)
+- Movie detail page uses dynamic routing (`/movie/[id]`)
+- No `useEffect` or client-side data fetching is used for primary data
+
+Validation:
+
+- `q` is required and minimum 2 characters
+- `page` must be >= 1
+
+Includes:
+
+- Core movie details
+- Genres
+- Runtime
+- Rating
+- Top 5 cast members
+- YouTube trailers
+- Poster and backdrop URLs
+
+Invalid IDs return a proper 404 response.
+
+Instructions to run tests:
+
+```bash
+npm run test
+```
