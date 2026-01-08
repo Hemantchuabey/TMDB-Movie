@@ -1,4 +1,5 @@
 import SearchBox from "@/components/SearchBox";
+import MovieGrid from "@/components/MovieGrid";
 
 type SearchParams = {
   q?: string;
@@ -10,10 +11,7 @@ export default async function Page({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const resolvedSearchParams = await searchParams;
-
-  const q = resolvedSearchParams.q;
-  const page = resolvedSearchParams.page || "1";
+  const { q, page = "1" } = await searchParams;
 
   let data: any = null;
   let error: string | null = null;
@@ -28,36 +26,53 @@ export default async function Page({
       );
 
       data = await res.json();
-
-      if (!res.ok) {
-        error = data.error || "Something went wrong";
-      }
+      if (!res.ok) error = data.error;
     } catch {
       error = "Failed to load movies";
     }
   }
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Movie Search</h1>
-      <SearchBox />
-      {!q && <p>Use query params to search movies.</p>}
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#f9fafb",
+        padding: "48px 16px",
+      }}
+    >
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+        <header style={{ textAlign: "center", marginBottom: 40 }}>
+          <h1
+            style={{
+              fontSize: 34,
+              fontWeight: 700,
+              color: "#111827",
+              marginBottom: 8,
+            }}
+          >
+            Movie Explorer
+          </h1>
+          <p style={{ color: "#6b7280" }}>Search movies using TMDB</p>
+        </header>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <SearchBox />
 
-      {q && !error && data?.results?.length === 0 && <p>No movies found.</p>}
+        {!q && (
+          <p style={{ textAlign: "center", color: "#6b7280" }}>
+            Start by searching for a movie.
+          </p>
+        )}
 
-      {data?.results?.map((movie: any) => (
-        <div key={movie.id} style={{ marginBottom: 16 }}>
-          <strong>{movie.title}</strong>
-          <div>Rating: {movie.vote_average}</div>
-        </div>
-      ))}
+        {error && (
+          <p style={{ color: "#dc2626", textAlign: "center" }}>{error}</p>
+        )}
+
+        {q && !error && data?.results?.length === 0 && (
+          <p style={{ textAlign: "center" }}>No results found.</p>
+        )}
+
+        {data?.results?.length > 0 && <MovieGrid movies={data.results} />}
+      </div>
     </main>
   );
 }
-
-export const metadata = {
-  title: "Movie Explorer - Discover Films",
-  description: "Search and explore movies using TMDB API",
-};
