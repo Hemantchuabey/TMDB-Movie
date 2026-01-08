@@ -1,3 +1,4 @@
+import Pagination from "@/components/Pagination";
 import SearchBox from "@/components/SearchBox";
 import MovieGrid from "@/components/MovieGrid";
 
@@ -71,7 +72,18 @@ export default async function Page({
           <p style={{ textAlign: "center" }}>No results found.</p>
         )}
 
-        {data?.results?.length > 0 && <MovieGrid movies={data.results} />}
+        {/* {data?.results?.length > 0 && <MovieGrid movies={data.results} />} */}
+
+        {data?.results?.length > 0 && (
+          <>
+            <MovieGrid movies={data.results} />
+
+            <Pagination
+              currentPage={Number(page)}
+              totalPages={data.total_pages}
+            />
+          </>
+        )}
       </div>
     </main>
   );

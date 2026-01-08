@@ -36,8 +36,9 @@ export default function SearchBox() {
           maxWidth: 420,
           padding: "12px 14px",
           borderRadius: 8,
-          border: "1px solid #d1d5db",
-          fontSize: 14,
+          border: "1px solid var(--border)",
+          background: "var(--card-bg)",
+          color: "var(--text)",
         }}
       />
     </form>

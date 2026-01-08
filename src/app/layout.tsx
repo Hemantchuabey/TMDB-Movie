@@ -26,6 +26,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={
+          {
+            "--bg": "#f9fafb",
+            "--card-bg": "#ffffff",
+            "--text": "#111827",
+            "--muted": "#6b7280",
+            "--border": "#e5e7eb",
+            "--hover-border": "#6366f1",
+          } as React.CSSProperties
+        }
       >
         {children}
       </body>

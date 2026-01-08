@@ -1,3 +1,4 @@
+"use client";
 type Props = {
   movie: {
     id: number;
@@ -14,11 +15,19 @@ export default function MovieCard({ movie }: Props) {
       style={{
         display: "flex",
         gap: 16,
-        background: "#ffffff",
-        border: "1px solid #e5e7eb",
+        background: "var(--card-bg)",
+        border: "1px solid var(--border)",
         borderRadius: 12,
         padding: 16,
-        alignItems: "flex-start",
+        transition: "transform 0.2s ease, border-color 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.03)";
+        e.currentTarget.style.borderColor = "var(--hover-border)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.borderColor = "var(--border)";
       }}
     >
       {/* Thumbnail */}
