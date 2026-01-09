@@ -14,9 +14,24 @@ export async function generateMetadata({
   const { id } = await params;
   const headersList = await headers();
   const host = headersList.get("host");
+  if (!host) {
+    notFound();
+  }
   const protocol = headersList.get("x-forwarded-proto") ?? "http";
+
   try {
-    const res = await fetch(`${protocol}://${host}/api/movies/${id}`, {
+    // const res = await fetch(`${protocol}://${host}/api/movies/${id}`, {
+    //   cache: "no-store",
+    // });
+
+    const isLocalhost =
+      host.startsWith("localhost") || host.startsWith("127.0.0.1");
+
+    const protocol = isLocalhost ? "http" : "https";
+
+    const url = new URL(`/api/movies/${id}`, `${protocol}://${host}`);
+
+    const res = await fetch(url.toString(), {
       cache: "no-store",
     });
 

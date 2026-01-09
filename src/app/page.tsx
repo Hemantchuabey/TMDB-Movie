@@ -21,19 +21,31 @@ export default async function Page({
   if (q) {
     const headersList = await headers();
     const host = headersList.get("host");
-    const protocol = headersList.get("x-forwarded-proto") ?? "http";
 
-    const res = await fetch(
-      `${protocol}://${host}/api/movies/search?q=${q}&page=${page}`,
-      { cache: "no-store" }
-    );
-
-    const result = await res.json();
-
-    if (!res.ok) {
-      error = result.error || "Failed to load movies";
+    if (!host) {
+      error = "Invalid request context";
     } else {
-      data = result;
+      const isLocalhost =
+        host.startsWith("localhost") || host.startsWith("127.0.0.1");
+
+      const protocol = isLocalhost ? "http" : "https";
+
+      const url = new URL(
+        `/api/movies/search?q=${q}&page=${page}`,
+        `${protocol}://${host}`
+      );
+
+      const res = await fetch(url.toString(), {
+        cache: "no-store",
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        error = result.error || "Failed to load movies";
+      } else {
+        data = result;
+      }
     }
   }
 
