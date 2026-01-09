@@ -1,6 +1,7 @@
 import Pagination from "@/components/Pagination";
 import SearchBox from "@/components/SearchBox";
 import MovieGrid from "@/components/MovieGrid";
+import { headers } from "next/headers";
 
 type SearchParams = {
   q?: string;
@@ -18,18 +19,21 @@ export default async function Page({
   let error: string | null = null;
 
   if (q) {
-    try {
-      const res = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
-        }/api/movies/search?q=${q}&page=${page}`,
-        { cache: "no-store" }
-      );
+    const headersList = await headers();
+    const host = headersList.get("host");
+    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
 
-      data = await res.json();
-      if (!res.ok) error = data.error;
-    } catch {
-      error = "Failed to load movies";
+    const res = await fetch(
+      `${protocol}://${host}/api/movies/search?q=${q}&page=${page}`,
+      { cache: "no-store" }
+    );
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      error = result.error || "Failed to load movies";
+    } else {
+      data = result;
     }
   }
 

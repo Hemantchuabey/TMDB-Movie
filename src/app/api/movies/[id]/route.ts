@@ -1,4 +1,7 @@
-import { tmdbFetch } from "@/app/lib/tmdb";
+export const runtime = 'nodejs';
+export const revalidate = 60;
+
+import { tmdbFetch } from '@/app/lib/tmdb';
 
 export async function GET(
   _req: Request,
@@ -8,17 +11,16 @@ export async function GET(
   const movieId = Number(id);
 
   if (!movieId || movieId <= 0) {
-    return Response.json({ error: "Invalid movie id" }, { status: 400 });
+    return Response.json({ error: 'Invalid movie id' }, { status: 400 });
   }
 
   try {
-    const config = await tmdbFetch("/configuration", 86400);
-    const posterBaseUrl = config.images.secure_base_url + "w500";
-    const backdropBaseUrl = config.images.secure_base_url + "w780";
+    const config = await tmdbFetch('/configuration');
+    const posterBaseUrl = config.images.secure_base_url + 'w500';
+    const backdropBaseUrl = config.images.secure_base_url + 'w780';
 
     const data = await tmdbFetch(
-      `/movie/${movieId}?append_to_response=videos,credits`,
-      60
+      `/movie/${movieId}?append_to_response=videos,credits`
     );
 
     const cast = data.credits?.cast?.slice(0, 5).map((c: any) => ({
@@ -28,7 +30,7 @@ export async function GET(
     }));
 
     const trailers = data.videos?.results
-      ?.filter((v: any) => v.site === "YouTube" && v.type === "Trailer")
+      ?.filter((v: any) => v.site === 'YouTube' && v.type === 'Trailer')
       .map((v: any) => ({
         id: v.id,
         key: v.key,
@@ -51,14 +53,13 @@ export async function GET(
       trailers,
     });
   } catch (error: any) {
-    if (error.message === "RATE_LIMIT") {
+    if (error.message === 'RATE_LIMIT') {
       return Response.json(
-        {
-          error: "Too many requests. Please try again later.",
-        },
+        { error: 'Too many requests. Please try again later.' },
         { status: 429 }
       );
     }
-    return Response.json({ error: "Movie not found" }, { status: 404 });
+
+    return Response.json({ error: 'Movie not found' }, { status: 404 });
   }
 }

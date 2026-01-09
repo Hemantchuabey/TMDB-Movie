@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 type Params = {
   id: string;
@@ -11,14 +12,13 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { id } = await params;
-
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
   try {
-    const res = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
-      }/api/movies/${id}`,
-      { cache: "no-store" }
-    );
+    const res = await fetch(`${protocol}://${host}/api/movies/${id}`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       return {
@@ -49,12 +49,7 @@ export default async function MoviePage({
 }) {
   const { id } = await params;
 
-  const res = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"
-    }/api/movies/${id}`,
-    { cache: "no-store" }
-  );
+  const res = await fetch(`/api/movies/${id}`, { cache: "no-store" });
 
   if (!res.ok) {
     notFound();

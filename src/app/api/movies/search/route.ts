@@ -1,5 +1,9 @@
+export const runtime = 'nodejs';
+export const revalidate = 60;
+
 import { tmdbFetch } from '@/app/lib/tmdb';
 import { mapSearchResults } from '@/app/lib/mappers';
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -21,11 +25,12 @@ export async function GET(req: Request) {
   }
 
   try {
-    const config = await tmdbFetch('/configuration', 86400);
+    const config = await tmdbFetch('/configuration');
 
     const data = await tmdbFetch(
-      `/search/movie?query=${encodeURIComponent(q)}&page=${page}&include_adult=false&language=en-US`,
-      60
+      `/search/movie?query=${encodeURIComponent(
+        q
+      )}&page=${page}&include_adult=false&language=en-US`
     );
 
     const normalized = mapSearchResults(data, config);
