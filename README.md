@@ -3,12 +3,29 @@
 This project is an assignment for a **Catalyst Media Integrated LLP** Company.  
 It demonstrate a small Movie Explorer application built using **Next.js App Router** and **The Movie Database (TMDB)** API.
 
+---
+
+## 🔗 Live Demo
+
+https://tmdb-movie-six.vercel.app/
+
 About Assignment :
 
 - SSR usage
 - Clean backend-for-frontend (BFF) architecture
 - Proper API handling, caching, and error handling
 - Production-ready structure
+
+---
+
+## 🛠 Tech Stack
+
+- **Next.js 14 (App Router)**
+- **TypeScript**
+- **Server Components (default)**
+- **Route Handlers (`/app/api`)**
+- **TMDB API (v3 endpoints + v4 token)**
+- **Vercel (Deployment)**
 
 ---
 
