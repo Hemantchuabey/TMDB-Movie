@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { id } = await params;
   const headersList = await headers();
   const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const protocol = headersList.get("x-forwarded-proto") ?? "http";
   try {
     const res = await fetch(`${protocol}://${host}/api/movies/${id}`, {
       cache: "no-store",

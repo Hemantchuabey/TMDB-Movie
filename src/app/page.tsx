@@ -21,7 +21,7 @@ export default async function Page({
   if (q) {
     const headersList = await headers();
     const host = headersList.get("host");
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+    const protocol = headersList.get("x-forwarded-proto") ?? "http";
 
     const res = await fetch(
       `${protocol}://${host}/api/movies/search?q=${q}&page=${page}`,
